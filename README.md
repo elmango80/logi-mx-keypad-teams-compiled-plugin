@@ -1,7 +1,7 @@
 # Microsoft Teams Controls
 
 <p align="center">
-  <img src="assets/readme-header.svg" alt="Microsoft Teams Controls para Logitech MX Keypad" width="1280">
+  <img src="assets/readme-header.png" alt="Microsoft Teams Controls para Logitech MX Keypad" width="1280">
 </p>
 
 Plugin compilado para controlar Microsoft Teams desde un **Logitech MX Keypad** mediante **Logi Options+**.
