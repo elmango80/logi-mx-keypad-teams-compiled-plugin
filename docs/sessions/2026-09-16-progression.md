@@ -25,6 +25,20 @@
 - Plugin virtual antiguo (`MicrosoftTeams-BB539293FA49494A`) **eliminado** por completo.
 - Instalación en dev: carpeta `Plugins/MicrosoftTeamsControls/` con `metadata/` + `mac/DLL`
   + `actionicons/` + `actionsymbols/` (creada a mano; ver §5/§11 y AGENTS.local.md).
+- **Comandos MULTIESTADO** (objetivo principal) implementados con `PluginMultistateDynamicCommand`:
+  - `ToggleCameraCommand` → "Cámara On/Off", `Cmd+Shift+O`, grupo **Reunión**.
+  - `ToggleMicCommand` → "Micrófono On/Off", `Cmd+Shift+M`, grupo **Reunión**.
+  - Estados `Off`(0, inicial) / `On`(1). `RunCommand` envía el atajo y luego
+    `ToggleCurrentState(actionParameter)` (toggle "óptico", ver limitación en AGENTS §9.2).
+  - Icono por estado vía override `GetCommandImage(actionParameter, deviceState, imageSize)`,
+    cargando `<ClaseCompleta>.On.svg` / `.Off.svg` de `actionicons/`.
+- **Refactor**: la lógica de dibujar el SVG centrado (55%) sobre `#505AC9` se extrajo a un
+  helper estático `TeamsIcon` (`RenderCentered` + `LoadSvg`), usado por `TeamsCommandBase`
+  (estáticos) y por los dos comandos multiestado. Sin duplicar código.
+- **Iconos placeholder** on/off de cámara y micro (SVG monocromos, variante Off tachada con
+  diagonal) en `actionicons/` (4 ficheros) + `actionsymbols/` (2 ficheros). Sustituibles.
+- `dotnet build -c Release` OK (0 warnings, 0 errors); DLL + iconos copiados al plugin
+  instalado y servicio reiniciado (log solo muestra el inofensivo "already loaded").
 
 ### 💡 Aprendizajes / a tener en cuenta
 - **Iconos SVG**: usar color en **atributos de presentación** (`stroke="#F0F0F0"`,
@@ -49,8 +63,11 @@
 ### ⏳ Pendiente
 - Pegar los SVG que faltan: Copilot, Llamadas, Contraer secciones, Ver canales, Ver chats,
   Abrir Copilot, Contraer barra de aplicaciones. (Con `style=` los normalizo a atributos.)
-- **Comandos multiestado** (cámara on/off y micrófono on/off) — objetivo final del proyecto
-  (usar `PluginMultistateDynamicCommand`, ver §9.2).
+- Reemplazar los **iconos placeholder** de cámara/micro por unos definitivos si se desea
+  (mantener nombres `<ClaseCompleta>.On.svg` / `.Off.svg` en `actionicons/`).
+- Verificar en Options+ que "Cámara On/Off" y "Micrófono On/Off" aparecen en el grupo
+  **Reunión** y que el toggle de icono/atajo funciona en el keypad (confirmar teclas
+  `Cmd+Shift+O` / `Cmd+Shift+M` en la versión de Teams instalada).
 - (Opcional) Localización formal vía XLIFF si se quiere multi-idioma.
 - (Opcional) Empaquetar `.lplug4` para instalación/distribución final.
 - Ajustar tamaño del icono (`IconScale` en `TeamsCommandBase`) si 55% no convence.
