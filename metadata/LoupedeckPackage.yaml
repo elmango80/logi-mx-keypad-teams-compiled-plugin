@@ -1,0 +1,13 @@
+type: plugin4
+name: MicrosoftTeamsControls
+displayName: Microsoft Teams
+version: 1.0.0
+author: elmango80
+copyright: elmango80
+
+pluginFileName: MicrosoftTeamsControls.dll
+pluginFolderMac: mac/
+
+license: MIT
+licenseUrl: https://opensource.org/licenses/MIT
+minimumLoupedeckVersion: "6.1"

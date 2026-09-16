@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>MicrosoftTeamsControls</AssemblyName>
+    <RootNamespace>Loupedeck.MicrosoftTeamsControls</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <!-- SDK de Logi/Loupedeck referenciado desde la instalacion local del LogiPluginService.
+       Ver AGENTS.local.md para el porque (no se usa el paquete NuGet). -->
+  <ItemGroup>
+    <Reference Include="PluginApi">
+      <HintPath>/Applications/Utilities/LogiPluginService.app/Contents/MonoBundle/PluginApi.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
