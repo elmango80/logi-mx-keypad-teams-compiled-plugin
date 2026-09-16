@@ -5,6 +5,11 @@ version: 1.0.0
 author: elmango80
 copyright: elmango80
 
+# Colores de los iconos/acciones (ARGB, opaco)
+backgroundColor: 4283456201   # #505AC9 (fondo)
+foregroundColor: 4293980400   # #F0F0F0 (icono monocromo)
+textColor: 4293980400         # #F0F0F0 (texto)
+
 pluginFileName: MicrosoftTeamsControls.dll
 pluginFolderMac: mac/
 

@@ -3,7 +3,7 @@ namespace Loupedeck.MicrosoftTeamsControls
     using System;
 
     // Compartir pantalla — Cmd+Shift+E
-    public class ShareScreenCommand : PluginDynamicCommand
+    public class ShareScreenCommand : TeamsCommandBase
     {
         public ShareScreenCommand()
             : base(displayName: "Compartir pantalla", description: "Compartir pantalla en Teams (Cmd+Shift+E)", groupName: "Reunión")

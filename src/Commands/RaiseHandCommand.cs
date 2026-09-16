@@ -3,7 +3,7 @@ namespace Loupedeck.MicrosoftTeamsControls
     using System;
 
     // Levantar la mano — Cmd+Shift+K
-    public class RaiseHandCommand : PluginDynamicCommand
+    public class RaiseHandCommand : TeamsCommandBase
     {
         public RaiseHandCommand()
             : base(displayName: "Levantar la mano", description: "Levantar o bajar la mano en Teams (Cmd+Shift+K)", groupName: "Reunión")

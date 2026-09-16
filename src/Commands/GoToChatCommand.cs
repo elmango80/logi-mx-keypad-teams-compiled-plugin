@@ -3,10 +3,10 @@ namespace Loupedeck.MicrosoftTeamsControls
     using System;
 
     // Ir al chat — Cmd+2
-    public class GoToChatCommand : PluginDynamicCommand
+    public class GoToChatCommand : TeamsCommandBase
     {
         public GoToChatCommand()
-            : base(displayName: "Ir al chat", description: "Ir al chat de Teams (Cmd+2)", groupName: "Navegación")
+            : base(displayName: "Chat", description: "Ir al chat de Teams (Cmd+2)", groupName: "Navegación")
         {
         }
 

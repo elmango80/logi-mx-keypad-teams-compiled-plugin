@@ -3,7 +3,7 @@ namespace Loupedeck.MicrosoftTeamsControls
     using System;
 
     // Videollamada — Cmd+Shift+S
-    public class VideoCallCommand : PluginDynamicCommand
+    public class VideoCallCommand : TeamsCommandBase
     {
         public VideoCallCommand()
             : base(displayName: "Videollamada", description: "Iniciar videollamada en Teams (Cmd+Shift+S)", groupName: "Reunión")
