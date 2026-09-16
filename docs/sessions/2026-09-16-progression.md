@@ -28,17 +28,21 @@
 - **Comandos MULTIESTADO** (objetivo principal) implementados con `PluginMultistateDynamicCommand`:
   - `ToggleCameraCommand` → "Cámara On/Off", `Cmd+Shift+O`, grupo **Reunión**.
   - `ToggleMicCommand` → "Micrófono On/Off", `Cmd+Shift+M`, grupo **Reunión**.
-  - Estados `Off`(0, inicial) / `On`(1). `RunCommand` envía el atajo y luego
-    `ToggleCurrentState(actionParameter)` (toggle "óptico", ver limitación en AGENTS §9.2).
+  - Estados `Off`(0, inicial) / `On`(1). `RunCommand` envía el atajo, hace
+    `ToggleCurrentState(actionParameter)` (toggle "óptico", ver limitación en AGENTS §9.2) y
+    **`ActionImageChanged(actionParameter)`** para forzar el redibujado del botón.
   - Icono por estado vía override `GetCommandImage(actionParameter, deviceState, imageSize)`,
-    cargando `<ClaseCompleta>.On.svg` / `.Off.svg` de `actionicons/`.
-- **Refactor**: la lógica de dibujar el SVG centrado (55%) sobre `#505AC9` se extrajo a un
-  helper estático `TeamsIcon` (`RenderCentered` + `LoadSvg`), usado por `TeamsCommandBase`
-  (estáticos) y por los dos comandos multiestado. Sin duplicar código.
-- **Iconos placeholder** on/off de cámara y micro (SVG monocromos, variante Off tachada con
-  diagonal) en `actionicons/` (4 ficheros) + `actionsymbols/` (2 ficheros). Sustituibles.
-- `dotnet build -c Release` OK (0 warnings, 0 errors); DLL + iconos copiados al plugin
-  instalado y servicio reiniciado (log solo muestra el inofensivo "already loaded").
+    cargando el SVG desde **recursos embebidos** (`EmbeddedResources/Camera{On,Off}.svg`,
+    `Mic{On,Off}.svg`) — NO desde disco (ver aprendizaje `Assembly.Location`).
+  - **Fondo de color por estado**: verde `#1E8E3E` (ON) / rojo `#D93025` (OFF), además del
+    icono (normal ↔ tachado). ✅ **Verificado funcionando en el keypad.**
+- **Refactor**: dibujar el SVG centrado (55%) se extrajo a `TeamsIcon.RenderCentered(svg,
+  size, bgArgb)` + `TeamsIcon.LoadEmbeddedSvg(name)`. Los comandos **estáticos** ya no
+  renderizan por código: usan el icono **nativo** de `actionicons/<clase>.svg` que carga el
+  servicio (más fiable). `TeamsCommandBase` quedó como base fina (solo constructor).
+- `VideoCallCommand` movido del grupo **Reunión** al grupo **Chat**.
+- `dotnet build -c Release` OK (0 warnings, 0 errors) y `dotnet format --verify-no-changes`
+  limpio; DLL desplegada y servicio reiniciado.
 
 ### 💡 Aprendizajes / a tener en cuenta
 - **Iconos SVG**: usar color en **atributos de presentación** (`stroke="#F0F0F0"`,
@@ -59,15 +63,26 @@
 - **Reinicio del servicio**: cualquier cambio (DLL, iconos, manifiesto) requiere reiniciar el
   LogiPluginService; cerrar la ventana no basta (ver §11.d / AGENTS.local.md).
 - `PluginLog` NO existe en la `PluginApi` local (era helper de plantilla); no usarlo.
+- ⚠️ **`Assembly.Location` viene VACÍO en el runtime del LogiPluginService.** Cualquier carga
+  de recursos por ruta relativa a la DLL (`Path.GetDirectoryName(Assembly.Location)`) falla
+  con `ArgumentNullException`. Por eso el multiestado, que necesita imagen **por código**
+  (distinta por estado), debe leer los SVG como **recursos embebidos**
+  (`Assembly.GetManifestResourceStream`), no desde `actionicons/`. Los comandos estáticos sí
+  funcionan con `actionicons/<clase>.svg` porque **el servicio** los carga de forma nativa.
+- ⚠️ **Multiestado no refresca la imagen solo con `ToggleCurrentState`.** Hay que llamar a
+  `ActionImageChanged(actionParameter)` tras el toggle; si no, la imagen se queda congelada en
+  el estado del último redibujado incidental (el **texto** sí cambia, el **icono** no).
+- **Diagnóstico**: como `PluginLog` no existe, para depurar se puede escribir a
+  `/tmp/<algo>.log` con `File.AppendAllText` desde `RunCommand`/`GetCommandImage` (quitar
+  después). Fue clave para ver que `GetCommandImage` sí recibía el `deviceState` correcto pero
+  `LoadSvg` petaba por `Assembly.Location`.
 
 ### ⏳ Pendiente
-- Pegar los SVG que faltan: Copilot, Llamadas, Contraer secciones, Ver canales, Ver chats,
-  Abrir Copilot, Contraer barra de aplicaciones. (Con `style=` los normalizo a atributos.)
-- Reemplazar los **iconos placeholder** de cámara/micro por unos definitivos si se desea
-  (mantener nombres `<ClaseCompleta>.On.svg` / `.Off.svg` en `actionicons/`).
-- Verificar en Options+ que "Cámara On/Off" y "Micrófono On/Off" aparecen en el grupo
-  **Reunión** y que el toggle de icono/atajo funciona en el keypad (confirmar teclas
-  `Cmd+Shift+O` / `Cmd+Shift+M` en la versión de Teams instalada).
+- Reemplazar los **iconos placeholder** de cámara/micro (en `src/EmbeddedResources/`) por unos
+  definitivos si se desea. Recordar: al editarlos hay que **recompilar** (van dentro de la DLL).
+- Limpiar ficheros muertos: `actionicons/...ToggleCameraCommand.{On,Off}.svg` y
+  `...ToggleMicCommand.{On,Off}.svg` ya **no se usan** (el multiestado lee de recursos
+  embebidos). Se pueden borrar.
 - (Opcional) Localización formal vía XLIFF si se quiere multi-idioma.
 - (Opcional) Empaquetar `.lplug4` para instalación/distribución final.
-- Ajustar tamaño del icono (`IconScale` en `TeamsCommandBase`) si 55% no convence.
+- Ajustar tamaño del icono (`IconScale` en `TeamsIcon`) si 55% no convence.

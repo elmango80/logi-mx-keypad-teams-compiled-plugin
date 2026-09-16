@@ -10,6 +10,12 @@
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
   </PropertyGroup>
 
+  <!-- Iconos de estado de los comandos multiestado, embebidos en la DLL.
+       Se leen por stream de recurso (Assembly.Location no es fiable en el runtime del LPS). -->
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedResources\*.svg" />
+  </ItemGroup>
+
   <!-- SDK de Logi/Loupedeck referenciado desde la instalacion local del LogiPluginService.
        Ver AGENTS.local.md para el porque (no se usa el paquete NuGet). -->
   <ItemGroup>

@@ -6,7 +6,7 @@ namespace Loupedeck.MicrosoftTeamsControls
     public class VideoCallCommand : TeamsCommandBase
     {
         public VideoCallCommand()
-            : base(displayName: "Videollamada", description: "Iniciar videollamada en Teams (Cmd+Shift+S)", groupName: "Reunión")
+            : base(displayName: "Videollamada", description: "Iniciar videollamada en Teams (Cmd+Shift+S)", groupName: "Chat")
         {
         }
 

@@ -2,23 +2,30 @@ namespace Loupedeck.MicrosoftTeamsControls
 {
     using System;
     using System.IO;
+    using System.Linq;
 
     // Helper compartido para dibujar iconos SVG del plugin CENTRADOS sobre el fondo,
     // de forma que no queden pegados a la parte superior del botón.
     // Lo usan tanto TeamsCommandBase (comandos estáticos) como los comandos multiestado.
     public static class TeamsIcon
     {
-        public const UInt32 BackgroundArgb = 0xFF505AC9u;  // #505AC9
+        public const UInt32 BackgroundArgb = 0xFF505AC9u;  // #505AC9 (azul del plugin)
+        public const UInt32 OnArgb = 0xFF1E8E3Eu;          // verde (estado ON)
+        public const UInt32 OffArgb = 0xFFD93025u;         // rojo (estado OFF)
 
         // Porcentaje del botón que ocupa el icono (centrado).
         private const Double IconScale = 0.55;
 
-        // Dibuja un SVG centrado sobre el fondo del plugin.
-        public static BitmapImage RenderCentered(String svg, PluginImageSize imageSize)
+        // Dibuja un SVG centrado sobre el fondo por defecto del plugin.
+        public static BitmapImage RenderCentered(String svg, PluginImageSize imageSize) =>
+            RenderCentered(svg, imageSize, BackgroundArgb);
+
+        // Dibuja un SVG centrado sobre un fondo de color concreto.
+        public static BitmapImage RenderCentered(String svg, PluginImageSize imageSize, UInt32 backgroundArgb)
         {
             using (var bb = new BitmapBuilder(imageSize))
             {
-                bb.Clear(BitmapColor.FromArgb(BackgroundArgb));
+                bb.Clear(BitmapColor.FromArgb(backgroundArgb));
 
                 var icon = BitmapImage.FromSvg(svg);
                 var side = Math.Min(bb.Width, bb.Height);
@@ -31,16 +38,26 @@ namespace Loupedeck.MicrosoftTeamsControls
             }
         }
 
-        // Lee un SVG de la carpeta actionicons/ del propio plugin por nombre de fichero
-        // (p. ej. "Loupedeck.MicrosoftTeamsControls.GoToChatCommand.svg"). Devuelve null si no existe.
-        public static String LoadSvg(String fileName)
+        // Lee un SVG embebido en la DLL (carpeta EmbeddedResources/), por nombre corto de
+        // fichero (p. ej. "CameraOn.svg"). Devuelve null si no existe.
+        // No depende de Assembly.Location (que en el runtime del LPS viene vacío).
+        public static String LoadEmbeddedSvg(String shortName)
         {
             try
             {
-                var dllDir = Path.GetDirectoryName(typeof(TeamsIcon).Assembly.Location); // .../mac
-                var pluginDir = Path.GetDirectoryName(dllDir);                           // raíz del plugin
-                var path = Path.Combine(pluginDir, "actionicons", fileName);
-                return File.Exists(path) ? File.ReadAllText(path) : null;
+                var asm = typeof(TeamsIcon).Assembly;
+                var name = asm.GetManifestResourceNames()
+                              .FirstOrDefault(n => n.EndsWith("." + shortName, StringComparison.OrdinalIgnoreCase)
+                                                || n.EndsWith(shortName, StringComparison.OrdinalIgnoreCase));
+                if (name == null)
+                {
+                    return null;
+                }
+                using (var stream = asm.GetManifestResourceStream(name))
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
             }
             catch
             {

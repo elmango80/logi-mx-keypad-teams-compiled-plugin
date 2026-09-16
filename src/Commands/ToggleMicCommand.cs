@@ -19,14 +19,17 @@ namespace Loupedeck.MicrosoftTeamsControls
         {
             this.Plugin.ClientApplication.SendKeyboardShortcut(VirtualKeyCode.KeyM, ModifierKey.ControlOrCommand | ModifierKey.Shift);
             this.ToggleCurrentState(actionParameter);
+            // Notificar al servicio para que redibuje el botón con el icono del nuevo estado.
+            this.ActionImageChanged(actionParameter);
         }
 
         protected override BitmapImage GetCommandImage(String actionParameter, Int32 deviceState, PluginImageSize imageSize)
         {
-            var svg = TeamsIcon.LoadSvg(this.GetType().FullName + (deviceState == 1 ? ".On.svg" : ".Off.svg"));
+            var on = deviceState == 1;
+            var svg = TeamsIcon.LoadEmbeddedSvg(on ? "MicOn.svg" : "MicOff.svg");
             return String.IsNullOrEmpty(svg)
                 ? base.GetCommandImage(actionParameter, deviceState, imageSize)
-                : TeamsIcon.RenderCentered(svg, imageSize);
+                : TeamsIcon.RenderCentered(svg, imageSize, on ? TeamsIcon.OnArgb : TeamsIcon.OffArgb);
         }
     }
 }
