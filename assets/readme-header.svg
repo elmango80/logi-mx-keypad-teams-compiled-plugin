@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="480" viewBox="0 0 1280 480" role="img" aria-labelledby="title desc">
+  <title id="title">Microsoft Teams Controls para Logitech MX Keypad</title>
+  <desc id="desc">Cabecera ilustrada con un Logitech MX Keypad y controles de Microsoft Teams.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#20275d"/>
+      <stop offset="0.55" stop-color="#3b45a8"/>
+      <stop offset="1" stop-color="#505ac9"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="80%" cy="35%" r="60%">
+      <stop offset="0" stop-color="#8f9aff" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#8f9aff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="keypad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4b4d56"/>
+      <stop offset="0.5" stop-color="#272a31"/>
+      <stop offset="1" stop-color="#17191e"/>
+    </linearGradient>
+    <linearGradient id="button" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#454953"/>
+      <stop offset="1" stop-color="#16181d"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="170%" height="180%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+      <feOffset dx="0" dy="18"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#ffffff" opacity="0.08"/>
+    </pattern>
+  </defs>
+
+  <rect width="1280" height="480" rx="28" fill="url(#background)"/>
+  <rect width="1280" height="480" rx="28" fill="url(#glow)"/>
+  <circle cx="1080" cy="40" r="190" fill="#9aa4ff" opacity="0.12" filter="url(#soft)"/>
+  <path d="M760 0h520v480H820c55-91 75-187 30-281C819 109 777 47 760 0Z" fill="#121735" opacity="0.18"/>
+  <rect x="0" y="0" width="1280" height="480" rx="28" fill="url(#dots)"/>
+
+  <g fill="#f0f0f0">
+    <rect x="76" y="78" width="7" height="106" rx="3.5" fill="#7f8bff"/>
+    <text x="112" y="118" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="48" font-weight="700" letter-spacing="-1.5">Microsoft Teams</text>
+    <text x="112" y="174" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="48" font-weight="700" letter-spacing="-1.5">Controls</text>
+    <text x="112" y="222" fill="#d9ddff" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="21" font-weight="400">Atajos de Teams para tu Logitech MX Keypad</text>
+  </g>
+
+  <g transform="translate(812 42) rotate(-10 180 190)" filter="url(#shadow)">
+    <path d="M42 84 288 58c18-2 33 11 35 29l34 259c2 17-10 33-27 36L83 414c-18 2-34-10-36-28L14 119c-2-17 10-33 28-35Z" fill="#0e1014" opacity="0.7"/>
+    <path d="M38 52 285 26c18-2 34 11 36 29l31 257c2 18-10 34-28 36L75 374c-18 2-33-10-35-28L7 88c-2-18 11-34 31-36Z" fill="url(#keypad)"/>
+    <path d="M40 57 284 31c14-1 26 9 28 23l31 258c2 14-8 27-22 29L77 367c-14 2-27-8-29-22L17 84c-2-14 9-26 23-27Z" fill="url(#dots)" opacity="0.9"/>
+
+    <g stroke="#0c0d10" stroke-width="5">
+      <rect x="57" y="79" width="57" height="57" rx="11" fill="url(#button)"/>
+      <rect x="128" y="71" width="57" height="57" rx="11" fill="url(#button)"/>
+      <rect x="199" y="63" width="57" height="57" rx="11" fill="url(#button)"/>
+      <rect x="64" y="151" width="57" height="57" rx="11" fill="url(#button)"/>
+      <rect x="135" y="143" width="57" height="57" rx="11" fill="url(#button)"/>
+      <rect x="206" y="135" width="57" height="57" rx="11" fill="url(#button)"/>
+      <rect x="72" y="223" width="57" height="57" rx="11" fill="#18a957"/>
+      <rect x="143" y="215" width="57" height="57" rx="11" fill="#315fce"/>
+      <rect x="214" y="207" width="57" height="57" rx="11" fill="url(#button)"/>
+      <rect x="81" y="295" width="57" height="42" rx="12" fill="url(#button)"/>
+      <rect x="151" y="287" width="57" height="42" rx="12" fill="url(#button)"/>
+    </g>
+
+    <g fill="#f0f0f0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" text-anchor="middle">
+      <text x="85" y="116" font-size="28">⌂</text>
+      <text x="156" y="108" font-size="28" font-weight="700">T</text>
+      <text x="227" y="100" font-size="25" font-weight="700">••</text>
+      <text x="92" y="188" font-size="22" font-weight="700">C</text>
+      <text x="163" y="180" font-size="25">◉</text>
+      <text x="234" y="172" font-size="23">✣</text>
+      <text x="100" y="261" font-size="26">⌁</text>
+      <text x="171" y="253" font-size="25">⌁</text>
+      <text x="242" y="245" font-size="28">⌕</text>
+      <text x="109" y="324" font-size="23">‹</text>
+      <text x="179" y="316" font-size="23">›</text>
+    </g>
+    <text x="274" y="337" fill="#81848c" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="18" font-weight="700" transform="rotate(-7 274 337)">logi</text>
+  </g>
+
+  <g transform="translate(1040 388)">
+    <circle cx="0" cy="0" r="5" fill="#b9c0ff"/>
+    <circle cx="28" cy="0" r="5" fill="#b9c0ff" opacity="0.65"/>
+    <circle cx="56" cy="0" r="5" fill="#b9c0ff" opacity="0.35"/>
+  </g>
+</svg>
