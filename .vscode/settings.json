@@ -1,0 +1,6 @@
+{
+  "[csharp]": {
+    "editor.defaultFormatter": "muhammad-sammy.csharp",
+    "editor.formatOnSave": true
+  }
+}

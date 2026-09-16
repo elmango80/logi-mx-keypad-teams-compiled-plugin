@@ -401,6 +401,37 @@ logiplugintool verify ./MicrosoftTeamsControls_1_0.lplug4
 - `.gitignore` ignora `bin/`, `obj/`, `*.lplug4`, `*.link`, `.DS_Store`, IDE y `AGENTS.local.md`.
 - La carpeta `.agents/` (skills/reglas de agentes) **sí** se versiona.
 
+### 14.1 Formateo y lint (`dotnet format` + `.editorconfig`)
+
+En este proyecto C# **no aplican OXLint/OXFmt** (son herramientas de JS/TS). El equivalente
+es **`dotnet format`**, que viene incluido en el .NET SDK y funciona **100% OFFLINE** (clave
+porque NuGet está bloqueado, ver `AGENTS.local.md`).
+
+- **Config**: `.editorconfig` en la raíz del repo. Está afinado a la *house style* de
+  Loupedeck que ya usa el código (tipos `String`/`Int32`, `using` dentro del namespace,
+  namespaces con bloque, llaves Allman, `this.`), para que el formateo **no** reescriba
+  el código existente.
+- **Lint en el build**: el `.csproj` activa `EnforceCodeStyleInBuild` + `EnableNETAnalyzers`,
+  así los avisos de estilo aparecen al compilar (no rompen el build).
+
+Comandos (equivalencias con OX*):
+
+```bash
+# Ejecutar desde src/ (necesita las vars de entorno de .NET, ver AGENTS.local.md §4)
+cd src/
+
+dotnet format whitespace     # ≈ OXFmt: formateo puro (aplica cambios)
+dotnet format style          # ≈ OXLint: reglas de estilo IDExxxx (aplica cambios)
+dotnet format analyzers      # analizadores CAxxxx (aplica cambios)
+dotnet format                # todo lo anterior de una vez
+
+# Modo CI/check: NO modifica, falla si algo no cumple
+dotnet format --verify-no-changes --severity info
+```
+
+> Estado: `dotnet format --verify-no-changes --severity info` pasa limpio y `dotnet build`
+> compila con **0 warnings / 0 errores**.
+
 > La configuración de identidad de git (nombre, email, clave de firma) y los datos del remoto
 > **no** se documentan aquí por ser información personal; están en `AGENTS.local.md`
 > (no versionado), junto con las particularidades del entorno local.

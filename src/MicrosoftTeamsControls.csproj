@@ -8,6 +8,18 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+
+    <!-- Lint (estilo/analizadores) durante el build, guiado por .editorconfig.
+         Equivalente a ejecutar OXLint en cada build. Los avisos NO rompen el build
+         (TreatWarningsAsErrors=false) para no bloquear el flujo de desarrollo. -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <!-- Necesario para que IDE0005 (usings sin usar) se detecte en el build.
+         Se silencia CS1591 (falta comentario XML) para no inundar de avisos. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <!-- Iconos de estado de los comandos multiestado, embebidos en la DLL.
