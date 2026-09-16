@@ -11,8 +11,8 @@ namespace Loupedeck.MicrosoftTeamsControls
         public ToggleMicCommand()
             : base("Micrófono On/Off", "Silenciar/activar el micrófono en Teams (Cmd+Shift+M)", "Reunión")
         {
-            this.AddState("Off", "El micrófono está silenciado"); // índice 0 (estado inicial)
-            this.AddState("On", "El micrófono está activo");      // índice 1
+            this.AddState("Silenciar", "El micrófono está silenciado"); // índice 0 (estado inicial)
+            this.AddState("Activar", "El micrófono está activo");       // índice 1
         }
 
         protected override void RunCommand(String actionParameter)
@@ -29,7 +29,7 @@ namespace Loupedeck.MicrosoftTeamsControls
             var svg = TeamsIcon.LoadEmbeddedSvg(on ? "MicOn.svg" : "MicOff.svg");
             return String.IsNullOrEmpty(svg)
                 ? base.GetCommandImage(actionParameter, deviceState, imageSize)
-                : TeamsIcon.RenderCentered(svg, imageSize, on ? TeamsIcon.OnArgb : TeamsIcon.OffArgb);
+                : TeamsIcon.RenderCentered(svg, imageSize);
         }
     }
 }

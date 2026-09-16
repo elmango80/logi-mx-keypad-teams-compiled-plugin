@@ -11,8 +11,8 @@ namespace Loupedeck.MicrosoftTeamsControls
         public ToggleCameraCommand()
             : base("Cámara On/Off", "Encender/apagar la cámara en Teams (Cmd+Shift+O)", "Reunión")
         {
-            this.AddState("Off", "La cámara está apagada");  // índice 0 (estado inicial)
-            this.AddState("On", "La cámara está encendida"); // índice 1
+            this.AddState("Apagar", "La cámara está apagada");    // índice 0 (estado inicial)
+            this.AddState("Encender", "La cámara está encendida"); // índice 1
         }
 
         protected override void RunCommand(String actionParameter)
@@ -29,7 +29,7 @@ namespace Loupedeck.MicrosoftTeamsControls
             var svg = TeamsIcon.LoadEmbeddedSvg(on ? "CameraOn.svg" : "CameraOff.svg");
             return String.IsNullOrEmpty(svg)
                 ? base.GetCommandImage(actionParameter, deviceState, imageSize)
-                : TeamsIcon.RenderCentered(svg, imageSize, on ? TeamsIcon.OnArgb : TeamsIcon.OffArgb);
+                : TeamsIcon.RenderCentered(svg, imageSize);
         }
     }
 }

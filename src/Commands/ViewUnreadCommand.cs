@@ -6,7 +6,7 @@ namespace Loupedeck.MicrosoftTeamsControls
     public class ViewUnreadCommand : TeamsCommandBase
     {
         public ViewUnreadCommand()
-            : base(displayName: "Ver no leído", description: "Filtrar por no leído (Opt+Cmd+U)", groupName: "Chat")
+            : base(displayName: "No leído", description: "Filtrar por no leído (Opt+Cmd+U)", groupName: "Chat")
         {
         }
 

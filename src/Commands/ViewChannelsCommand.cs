@@ -6,7 +6,7 @@ namespace Loupedeck.MicrosoftTeamsControls
     public class ViewChannelsCommand : TeamsCommandBase
     {
         public ViewChannelsCommand()
-            : base(displayName: "Ver canales", description: "Ver canales (Opt+Cmd+A)", groupName: "Chat")
+            : base(displayName: "Canales", description: "Ver canales (Opt+Cmd+A)", groupName: "Chat")
         {
         }
 
