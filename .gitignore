@@ -14,3 +14,10 @@ obj/
 # Logi plugin packaging
 *.lplug4
 *.link
+
+# Notas de entorno local (no versionar)
+AGENTS.local.md
+
+# Estado interno de la CLI (no versionar)
+.devin/
+.devin

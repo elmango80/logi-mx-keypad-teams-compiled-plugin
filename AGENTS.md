@@ -104,30 +104,30 @@ Este proyecto es **compilado en C#** (el virtual no permite multiestado).
 
 ---
 
-## 5. Requisitos de desarrollo (macOS)
+## 5. Requisitos de desarrollo
 
 Qué hace falta y para qué sirve cada pieza:
 
 1. **Logi Options+** (host app). Al instalarlo se instala también el **LogiPluginService**,
    que es quien carga y ejecuta el plugin. Sin esto no hay dónde probar.
    - Descarga: https://www.logitech.com/software/logi-options-plus.html
-2. **.NET 8 SDK** (runtime + compilador de C#). El plugin es un `.dll` .NET.
-   - Descarga: https://dotnet.microsoft.com/download/dotnet/8.0
-   - Verificar: `dotnet --version`  → debe empezar por `8.`
+2. **.NET SDK** (runtime + compilador de C#). El plugin es un `.dll` .NET.
+   - Descarga: https://dotnet.microsoft.com/download/dotnet
+   - Verificar: `dotnet --version`
 3. **Logi Plugin Tool** (`LogiPluginTool`): CLI oficial para **generar** el proyecto,
    **empaquetar** (`.lplug4`) y **verificar** paquetes.
    ```bash
    dotnet tool install --global LogiPluginTool
    ```
-   - Verificar: `logiplugintool --help`
-   - Si el comando no se encuentra, añade la carpeta de tools de .NET al PATH:
-     `export PATH="$PATH:$HOME/.dotnet/tools"`
 4. Editor: VS Code, Visual Studio 2022 o Rider.
 
-> **Ojo — no hay un "SDK de Logi" que descargar aparte.** El SDK de C# se entrega como
-> **paquete NuGet** (`PluginApi`, ya referenciado por el proyecto que genera el
-> `LogiPluginTool`), y se restaura solo al hacer `dotnet build`. Es decir: instalas
-> **LogiPluginTool** + **.NET 8**, generas el proyecto, y el SDK llega vía NuGet.
+> **Nota sobre el SDK de C#**: no hay un "SDK de Logi" que descargar aparte. Se entrega
+> como paquete NuGet (`PluginApi`), referenciado por el proyecto que genera el
+> `LogiPluginTool`, y se restaura al hacer `dotnet build`.
+
+> ℹ️ **Entorno local**: para especificidades de la máquina de desarrollo actual (versiones,
+> rutas, ajustes concretos) que NO se versionan, consulta el archivo **`AGENTS.local.md`**
+> si existe en la raíz del repo.
 
 ---
 
@@ -188,8 +188,8 @@ type: plugin4
 name: MicrosoftTeamsControls
 displayName: Microsoft Teams Controls
 version: 1.0.0
-author: elmango80
-copyright: elmango80
+author: <autor>          # ver AGENTS.local.md
+copyright: <autor>
 supportedDevices:
   - LoupedeckCt
   - LoupedeckLive
@@ -318,7 +318,6 @@ Hay **dos formas de instalar**: en desarrollo (automática, vía `.link`) y fina
 
 ### 11.a Generar el proyecto (una vez)
 ```bash
-cd /Users/n857521/code/elmango80/logi-teams-plugin
 logiplugintool generate MicrosoftTeamsControls   # crea MicrosoftTeamsControlsPlugin/
 ```
 
@@ -326,13 +325,12 @@ logiplugintool generate MicrosoftTeamsControls   # crea MicrosoftTeamsControlsPl
 Con solo compilar, el plugin queda **auto-instalado** para desarrollo:
 ```bash
 cd MicrosoftTeamsControlsPlugin
-dotnet build            # 1) restaura el SDK (NuGet) y compila
-                        # 2) crea un archivo .link en la carpeta Plugins del servicio
+dotnet build            # compila y crea un archivo .link en la carpeta Plugins del servicio
 ```
-- El **`.link`** aparece en:
+- El **`.link`** aparece en
   `~/Library/Application Support/Logi/LogiPluginService/Plugins/MicrosoftTeamsControls.link`
-  y apunta al directorio de compilación. El servicio carga el plugin **desde ahí** (no hay
-  que copiar carpetas a mano).
+  y apunta al directorio de compilación; el servicio carga el plugin desde ahí (no hay que
+  copiar carpetas a mano).
 - **Hot reload** (recompila y recarga al guardar):
   ```bash
   cd src/ && dotnet watch build
@@ -340,8 +338,8 @@ dotnet build            # 1) restaura el SDK (NuGet) y compila
 - Verificar que se instaló:
   - En Options+ → vista de personalización del MX Keypad → **All Actions** → debe aparecer
     "Microsoft Teams Controls" bajo **Installed Plugins**.
-  - Si NO aparece: Options+ → Ajustes → **"Restart Logi Plugin Service"** (recuerda el
-    gotcha de §11.d: el servicio escanea al arrancar).
+  - Si NO aparece: Options+ → Ajustes → **"Restart Logi Plugin Service"** (el servicio
+    escanea al arrancar, ver §11.d).
   - Revisar log de carga:
     `~/Library/Application Support/Logi/LogiPluginService/Logs/plugin_logs/MicrosoftTeamsControls.log`
 
@@ -354,7 +352,7 @@ open ./MicrosoftTeamsControls_1_0.lplug4     # lo instala el package installer d
 > Para producción: quita el `.link` de desarrollo antes de instalar el `.lplug4`, para no
 > tener el plugin cargado dos veces.
 
-### 11.d ⚠️ Gotcha CRÍTICO (aprendido en esta sesión)
+### 11.d ⚠️ Gotcha importante
 El **LogiPluginService solo escanea `Plugins/` y las localizaciones AL ARRANCAR**.
 Cualquier cambio (nuevo plugin, editar `actions.json`, añadir/editar un `.xliff`) **no se
 ve hasta reiniciar el servicio**. Cerrar/abrir solo la ventana de Options+ **no basta**.
@@ -398,17 +396,14 @@ logiplugintool verify ./MicrosoftTeamsControls_1_0.lplug4
 
 ## 14. Convenciones del repositorio
 
-- **Identidad git = PERSONAL** (configurada solo en local, NO usar la de Santander):
-  - `user.name`: Mango Sánchez-Redondo
-  - `user.email`: elmango80@gmail.com
-  - `user.signingkey`: `~/.ssh/id_ed25519_personal.pub` (firma SSH activada)
 - **Rama principal**: `master`.
-- **Remoto** (cuando se cree en GitHub personal, cuenta `elmango80`), usar el alias SSH
-  personal para no usar la clave de Santander:
-  ```bash
-  git remote add origin git@github.com-personal:elmango80/logi-teams-plugin.git
-  ```
-- `.gitignore` ya ignora `bin/`, `obj/`, `*.lplug4`, `*.link`, `.DS_Store`, IDE.
+- **Commits firmados** (firma SSH).
+- `.gitignore` ignora `bin/`, `obj/`, `*.lplug4`, `*.link`, `.DS_Store`, IDE y `AGENTS.local.md`.
+- La carpeta `.agents/` (skills/reglas de agentes) **sí** se versiona.
+
+> La configuración de identidad de git (nombre, email, clave de firma) y los datos del remoto
+> **no** se documentan aquí por ser información personal; están en `AGENTS.local.md`
+> (no versionado), junto con las particularidades del entorno local.
 
 ---
 
@@ -433,7 +428,7 @@ logiplugintool verify ./MicrosoftTeamsControls_1_0.lplug4
 ## 16. Estado actual del proyecto
 
 - [x] Repositorio git inicializado (rama `master`, identidad personal, `.gitignore`).
-- [ ] Instalar .NET 8 SDK + LogiPluginTool.
+- [ ] Instalar .NET SDK + LogiPluginTool.
 - [ ] Generar esqueleto (`logiplugintool generate MicrosoftTeamsControls`).
 - [ ] Implementar `Application` (enlace a `com.microsoft.teams2`).
 - [ ] Comandos estáticos (Open Chat, Share Screen, Raise Hand).
